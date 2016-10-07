@@ -16,9 +16,7 @@ Files
 
 (2) A keys file holds API credentials
 
-(3) __init__.py makes the folder a module from which other files or code can be imported. This is needed to import the API credentials.
-
-(4) run.py is the main file to execute - ultimately it outputs a separate CSV formatted as detailed in "Outputs" below
+(3) run.py is the main file to execute - ultimately it outputs a separate CSV formatted as detailed in "Outputs" below
 
 
 
