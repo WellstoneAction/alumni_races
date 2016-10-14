@@ -1,28 +1,51 @@
 from keys import google_civic_api
 import csv
-#Python uses 'packages' to hold a set of tools you don't use all the
-#time. But you can import them when you need them. CSV is a package of tools for
-#working on CSVs.
-
-
+import requests
+import pprint
 
 counter = 0
+addresses = []
+names = []
 with open('alumni.csv', 'rb') as csvfile:
 	event_file_reader = csv.reader(csvfile, delimiter=',', quotechar='"')
 	for row in event_file_reader:
-		# Check folks who were in a candidate track in 2015 or 2016
-		if "candidate" in row[6].lower() and ("2015" in row[6].lower() or "2016" in row[6].lower()):
-			print row[1]+" "+row[2]+": "+ row[4] + ", " +row[5]+" - "+row[6]+"\n"
-			counter +=1
-print counter
-# Working with a csv file always has these parts:
-#---------------------------------------------------
-# A line (like line 7) to open the file that tells the computer which file 
-# you want to open and some options to help it understand how that file is laid out.
+		# Eliminate header row
+		if row.index !=0:
+			name = row[1]+" "+row[2] 
+			if name not in names:
+				names.append(name)
+			address = (row[4].strip() + " " +row[5].strip()).strip()
+			training = row[6]
+			if len(address) > 0:
+				if address not in addresses:
+					addresses.append(address)
+				counter +=1
 
-# A line (like line 8) that tells Python how to save the info from the csv in its own
-# language.
+print "\n "+str(counter) +" people noted an address and went through a candidate track or training in 2015 or 2016."
+print " Alumni reported "+ str(len(addresses)) + " unique addresses.\n"
 
-# A line (like line 9) that starts the for loop that will cycle through all the rows
 
-# Then, the print line prints out the value from the first and second columns for each row
+candidates = []
+matched_candidates = []
+# Check ballot info for the town where this person lives
+for address in addresses:
+	url = "https://www.googleapis.com/civicinfo/v2/voterinfo?key="+google_civic_api+"&address="+address+"&electionId=2000"
+	r = requests.get(url)
+	results = r.json()
+
+	try:
+		for i in results["contests"]:
+			if i["type"]=="General":
+				for j in i["candidates"]:
+					candidate_name = j["name"]
+					candidates.append(candidate_name)
+					if candidate_name in names:
+						if candidate_name not in matched_candidates:
+							pprint.pprint(j["name"])
+							matched_candidates.append(candidate_name)
+	except:
+		print address
+		pprint.pprint(results)
+
+print len(candidates)
+print matched_candidates
