@@ -73,30 +73,3 @@ class Matched_Race(Base):
 Base.metadata.bind = engine
 Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
-
-# 4. Add alumni and locations to database from csv
- 
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
-
-counter = 0
-with open('alumni.csv', 'rb') as csvfile:
-	event_file_reader = csv.reader(csvfile, delimiter=',', quotechar='"')
-	for row in event_file_reader:
-		# Eliminate header row
-		if row.index !=0:
-			constituent_id = row[0]
-			first_name = row[1]
-			last_name = row[2]
-			email = row[3]
-			city = row[4].strip()
-			state = row[5].strip()
-			address_string = (city + " " + state).strip()
-			training = row[6]
-			counter +=1
-			session.add(Alumnus(constituent_id = constituent_id, first_name=first_name, last_name = last_name, email = email, city = city, state = state, training = training))
-			session.add(Location(address_string = address_string))
-			session.commit()
-			print first_name, last_name
-
-print "\n "+str(counter) +" alumni read from csv file."
