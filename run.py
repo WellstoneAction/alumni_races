@@ -3,6 +3,13 @@ import csv
 import requests
 import pprint
 
+
+
+
+# 5. For each location, send a request to the Google Civic Info API.
+#   a. For each candidate running in that location, check to see if
+#   b. For each 
+
 counter = 0
 addresses = []
 names = []
