@@ -21,7 +21,7 @@ with open('alumni.csv', 'rb') as csvfile:
 					addresses.append(address)
 				counter +=1
 
-print "\n "+str(counter) +" people noted an address and went through a candidate track or training in 2015 or 2016."
+print "\n "+str(counter) +" unique alumni read from csv file."
 print " Alumni reported "+ str(len(addresses)) + " unique addresses.\n"
 
 
@@ -49,3 +49,14 @@ for address in addresses:
 
 print len(candidates)
 print matched_candidates
+
+
+# 3. Add alumni to database from csv
+
+
+# 4. Add potential locations to database from csv
+
+
+# 5. For each location, send a request to the Google Civic Info API.
+#   a. For each candidate running in that location, check to see if
+#   b. For each 
