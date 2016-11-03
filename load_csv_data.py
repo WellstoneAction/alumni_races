@@ -13,20 +13,14 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
-from configure_alumni_races_db import Base, Alumnus, Location, Matched_Race
+from configure_db import Base, Alumnus, Location, Matched_Race
+
 
 # 2. Open a database connection
-def connect(dbuser, dbpassword, db='alumni_races', host='localhost', port=5432):
-	url = 'postgresql://{}:{}@{}:{}/{}'
-	url = url.format(dbuser, dbpassword, host, port, db)
-
-	engine = create_engine(url, client_encoding='utf8')
-
-	return engine
-
-engine = connect(dbuser, dbpassword)
-
+url = 'postgresql://'+dbuser+':'+dbpassword+'@localhost:5432/alumni_races'
+engine = create_engine(url, client_encoding='utf8')
 print engine
+
 
 # 3. Add alumni and locations to database from csv
 Base = declarative_base()
@@ -34,6 +28,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+address_strings = []
 
 counter = 0
 with open('alumni.csv', 'rb') as csvfile:
@@ -47,12 +42,21 @@ with open('alumni.csv', 'rb') as csvfile:
 			email = row[3]
 			city = row[4].strip()
 			state = row[5].strip()
-			address_string = (city + " " + state).strip()
+			if len(city) > 2:
+				address_string = (city + ", " + state).strip()
+			else:
+				address_string = (state).strip()
 			training = row[6]
 			counter +=1
-			session.add(Alumnus(constituent_id = constituent_id, first_name=first_name, last_name = last_name, email = email, city = city, state = state, training = training))
-			session.add(Location(address_string = address_string))
+			a = Alumnus(constituent_id = constituent_id, first_name=first_name, last_name = last_name, email = email, city = city, state = state, training = training)
+			session.add(a)
+			if address_string not in address_strings:
+				address_strings.append(address_string)
+				l = Location(city = city, state = state, address_string = address_string)
+				session.add(l)
+				print l.address_string		
 			session.commit()
-			print first_name, last_name
 
 print "\n "+str(counter) +" alumni read from csv file."
+location = session.query(Location).all()
+print len(location)
