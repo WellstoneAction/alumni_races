@@ -16,20 +16,23 @@ Files
 
 (2) A keys file holds API credentials
 
-(3) run.py is the main file to execute - ultimately it outputs a separate CSV formatted as detailed in "Outputs" below
-
+(3) After creating a database (alumni_races), run the following scripts in this order:
++ configure_db.py
++ load_csv_data.py
++ get_candidates.py
++ match_alumni.py
 
 
 Data sources
 ============
 
-run.py draws on the Google Search API, the Google Civic Information API, and matches to CSVs exported from Raiser's Edge
+get_candidates.py draws on the Google Search API, the Google Civic Information API, and matches to CSVs exported from Raiser's Edge
 
 
 Output
 =======
 
-run.py outputs a csv that contains:
+get_candidates.py outputs a csv that contains:
 - Constituent IDs and all other original information for alumni. The constituent ID allows easy matching back into RE.
 - A field indicating "Yes" is the alumnus is running for office in 2016
 - A field indicating "Yes" if the alumnus is working on a candidate race in 2016
