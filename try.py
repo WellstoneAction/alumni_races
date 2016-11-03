@@ -31,11 +31,3 @@ session = DBSession()
 ###############
 # sqlalchamy commands
 ###############
-
-with open('survey.csv', 'rb') as csvfile:
-	event_file_reader = csv.reader(csvfile, delimiter=',', quotechar='"')
-	for row in event_file_reader:
-		# Eliminate header row
-		if row[7] == "First name":
-						header_row = ["Constituent_ID", row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10]]
-						print header_row
