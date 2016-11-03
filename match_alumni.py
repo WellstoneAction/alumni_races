@@ -40,8 +40,9 @@ for a in alumni:
 		if s is not None:
 			race = session.query(Race).get(s.race_id)
 			name_and_district = race.office + " " + race.district_scope + " " + race.district_name
-			print name_and_district
-			new_row = [a.constituent_id, "I am running for office", name_and_district, "", "", "", "", (a.city +", " + a.state), a.first_name, a.last_name, a.email, ""]
+			candidate_name = s.name
+			print candidate_name
+			new_row = [a.constituent_id, "I am running for office", name_and_district, candidate_name, "", "", "", (a.city +", " + a.state), a.first_name, a.last_name, a.email, ""]
 			new_rows_list.append(new_row)
 			counter +=1
 
