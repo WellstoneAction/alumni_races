@@ -5,7 +5,7 @@
 
 
 # 1. Import API key and modules
-from keys import google_civic_api, dbuser, dbpassword
+from keys import google_civic_api, dbuser, dbpassword, pvs_api
 import csv
 import requests
 import pprint
@@ -29,5 +29,5 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 ###############
-# sqlalchamy commands
+# commands
 ###############
